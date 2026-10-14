@@ -6,9 +6,9 @@
 <div class="demo">ЗАГВАРЫН ТАНИЛЦУУЛГА — Бодит нэвтрэлт, Google Sheets холболт хийгдээгүй. Дэлгэц дээрх тоонууд жишээ.</div>
 <section id="login" class="login"><div class="login-card">
 <img class="logo" src="../assets/logo.png" alt="Цэлмэг Зам лого"><h1>ЦЭЛМЭГ ЗАМ</h1><p class="subtitle">ERP MANAGEMENT PORTAL</p>
-<label for="code">Нэвтрэх код (загвар)</label><input id="code" class="field" type="password" placeholder="••••••••" disabled autocomplete="off" aria-describedby="disclaimer">
-<button class="primary full" onclick="showDemo()">Dashboard загвар үзэх →</button>
-<p class="hint" id="disclaimer">Энэ нь зөвхөн загвар үзүүлэх хуудас. Нэвтрэх код авахгүй, шалгахгүй. Бодит систем нэвтрэх эрхтэй тусдаа сервер дээр ажиллана.</p></div></section>
+<label for="code">Нэвтрэх код (загвар)</label><input id="code" class="field" type="password" inputmode="numeric" maxlength="4" placeholder="4 оронтой код" autocomplete="off" aria-describedby="disclaimer" onkeydown="if(event.key==='Enter')showDemo()"><p id="loginError" role="alert" style="color:#b42318;font-size:12px;display:none;margin:-6px 0 13px">Нэвтрэх код буруу байна.</p>
+<button class="primary full" onclick="showDemo()">Нэвтрэх →</button>
+<p class="hint" id="disclaimer">Түр туршилтын кодтой загвар. Код браузер дээр шалгагддаг тул бодит мэдээллийг хамгаалахгүй. Жинхэнэ нэвтрэлтийг сервер талд тусад нь хийнэ.</p></div></section>
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar"><div class="sidebrand"><img class="logo" src="../assets/logo.png" alt="" style="width:43px;height:43px"><div><strong>ЦЭЛМЭГ ЗАМ ERP</strong><small>Management System</small></div></div><nav class="side-nav" id="menu"></nav><div class="sidebar-foot">© Цэлмэг Зам ХХК · ERP prototype</div></aside>
 <div class="main"><header class="top"><div style="display:flex;align-items:center;gap:10px"><button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')" aria-label="Цэс нээх">☰</button><strong>Удирдлагын мэдээллийн систем</strong></div><div class="top-right"><span class="chip">Жишээ өгөгдөл</span><button class="logout" onclick="exitDemo()">Гарах ↗</button></div></header><main class="content"><div class="intro"><div><h2 id="page-title">Ерөнхий Dashboard</h2><p id="page-desc">Компанийн үйл ажиллагааны үндсэн үзүүлэлтүүд</p></div><span class="chip">2026 оны жишээ</span></div><div id="page"></div></main></div></div>
@@ -30,6 +30,6 @@ else if(id==='hr'){out='<div class="kpis">'+kpi('Нийт ажилтан','60+',
 else{out='<div class="cards">'+card('Гэрээ, акт','<div class="empty">Google Drive холболт хүлээгдэж байна</div>')+card('Ажлын зураг, тайлан','<div class="empty">Зөвшөөрөлтэй файлын жагсаалт энд гарна</div>')+'</div>'}
 document.getElementById('page').innerHTML=out+notice}
 document.getElementById('menu').innerHTML=modules.map(m=>'<button class="navitem" data-module="'+m[0]+'" onclick="render(\''+m[0]+'\')"><span aria-hidden="true">'+m[1]+'</span>'+m[2]+'</button>').join('');
-function showDemo(){document.getElementById('login').style.display='none';document.getElementById('app').classList.add('show');render('dashboard');}
-function exitDemo(){document.getElementById('app').classList.remove('show');document.getElementById('login').style.display='grid';}
+function showDemo(){if(document.getElementById('code').value!=='0627'){document.getElementById('loginError').style.display='block';return;}document.getElementById('loginError').style.display='none';document.getElementById('login').style.display='none';document.getElementById('app').classList.add('show');render('dashboard');}
+function exitDemo(){document.getElementById('app').classList.remove('show');document.getElementById('login').style.display='grid';document.getElementById('code').value='';}
 </script></body></html>
