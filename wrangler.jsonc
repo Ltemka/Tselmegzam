@@ -1,0 +1,9 @@
+
+{
+  "name": "orange-frog-d7fa",
+  "compatibility_date": "2026-10-14",
+  "assets": {
+    "directory": "./",
+    "html_handling": "auto-trailing-slash"
+  }
+}
