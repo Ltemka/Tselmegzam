@@ -30,8 +30,8 @@ const txInput=(label,name,required=false,type='text')=>'<label>'+label+(required
 const txSelect=(label,name,options)=>'<label>'+label+'<select class="field" name="'+name+'">'+options.map(o=>'<option value="'+txEsc(o)+'">'+txEsc(o)+'</option>').join('')+'</select></label>';
 const txBankOptions=['Банк сонгох','Хаан банк','Голомт банк','Худалдаа хөгжлийн банк','ХасБанк','Төрийн банк','Капитрон банк','Богд банк','Тээвэр хөгжлийн банк','Ариг банк','Чингис хаан банк','Үндэсний хөрөнгө оруулалтын банк','Бусад'];
 /* Сонголтын эх сурвалжийг дараа нь хамгаалагдсан Google Sheets API-аар холбоно. */
-let txProjects=[],txCategories=[];
-function txReferenceSelect(label,name,items){return '<label>'+label+'<select class="field" name="'+name+'"><option value="">Сонгох (Sheets холбогдоогүй)</option>'+items.map(v=>'<option>'+txEsc(v)+'</option>').join('')+'</select></label>';}
+let txProjects=["Баруунбүрэн – Амарбаясгалант хийд авто зам 33.4 км","Ханбогд сумын төвийн авто зам, авто зогсоол","Цогт-Овоо","УБ - Сүхбаатар дүүрэг"],txCategories=["Түлш шатахуун","Машин механизмын түрээс","Сэлбэг хэрэгсэл, засвар","Барилгын материал","Цалин, хөдөлмөрийн хөлс","Хоол хүнс","Тээвэр, логистик","Кемп, байр, ахуйн зардал","Лаборатори, шинжилгээ","Геодези, хэмжилт","Туслан гүйцэтгэгч","Албан томилолт","Банкны шимтгэл","Татвар, хураамж","Бусад зардал"];
+function txReferenceSelect(label,name,items){return '<label>'+label+'<select class="field" name="'+name+'"><option value="">Сонгох</option>'+items.map(v=>'<option>'+txEsc(v)+'</option>').join('')+'</select></label>';}
 function transactionsView(){
 let form='<form id="tx-form" onsubmit="saveDemoTransaction(event)"><div class="tx-form-grid">'+
 txInput('Огноо','date',true,'date')+
