@@ -89,6 +89,10 @@ else if(id==='hr'){out='<div class="kpis">'+kpi('Нийт ажилтан','60+',
 else{out='<div class="cards">'+card('Гэрээ, акт','<div class="empty">Google Drive холболт хүлээгдэж байна</div>')+card('Ажлын зураг, тайлан','<div class="empty">Зөвшөөрөлтэй файлын жагсаалт энд гарна</div>')+'</div>'}
 document.getElementById('page').innerHTML=out+(id==='transactions'?'':notice);if(id==='transactions')refreshTransactionList()}
 document.getElementById('menu').innerHTML=modules.map(m=>'<button class="navitem" data-module="'+m[0]+'" onclick="render(\''+m[0]+'\')"><span aria-hidden="true">'+m[1]+'</span>'+m[2]+'</button>').join('');
-function showDemo(){if(document.getElementById('code').value!=='0627'){document.getElementById('loginError').style.display='block';return;}document.getElementById('loginError').style.display='none';document.getElementById('login').style.display='none';document.getElementById('app').classList.add('show');render('dashboard');}
-function exitDemo(){document.getElementById('app').classList.remove('show');document.getElementById('login').style.display='grid';document.getElementById('code').value='';}
+const ERP_SESSION_KEY='tselmegzam_erp_demo_session_until';
+const ERP_SESSION_DURATION=15*60*1000;
+function enterDemo(){document.getElementById('loginError').style.display='none';document.getElementById('login').style.display='none';document.getElementById('app').classList.add('show');render('dashboard');}
+function showDemo(){if(document.getElementById('code').value!=='0627'){document.getElementById('loginError').style.display='block';return;}try{sessionStorage.setItem(ERP_SESSION_KEY,String(Date.now()+ERP_SESSION_DURATION));}catch(e){}enterDemo();}
+function exitDemo(){try{sessionStorage.removeItem(ERP_SESSION_KEY);}catch(e){}document.getElementById('app').classList.remove('show');document.getElementById('login').style.display='grid';document.getElementById('code').value='';}
+(function restoreDemoSession(){try{const expiry=Number(sessionStorage.getItem(ERP_SESSION_KEY));if(Number.isFinite(expiry)&&expiry>Date.now()){enterDemo();}else{sessionStorage.removeItem(ERP_SESSION_KEY);}}catch(e){}})();
 </script></body></html>
