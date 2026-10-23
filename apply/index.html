@@ -25,7 +25,7 @@
 <p class="footer">© Цэлмэг Зам ХХК · Анкетын хуудас</p></main>
 <script>
 /* Apps Script deployment URL supplied after manual deployment. Do not embed secrets. */
-const ENDPOINT='';
+const ENDPOINT='https://script.google.com/macros/s/AKfycbwrfrbgYe10o1gvF2eoaMxpsohWbFYlf-WsmiZSPSfJedibQP1HDEnLLJtdBNZ-kQTW/exec';
 const form=document.getElementById('applyForm'),status=document.getElementById('status'),btn=document.getElementById('send');
 if(/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(ENDPOINT)){form.action=ENDPOINT;btn.disabled=false;status.textContent='Мэдээллээ бөглөөд “Анкет илгээх” товчийг дарна уу. Амжилттай илгээгдсэн эсэхийг дараагийн хуудсанд баталгаажуулна.';status.style.background='#e9f6ee';status.style.color='#287746';}
 form.addEventListener('submit',e=>{if(btn.disabled){e.preventDefault();return}if(!form.reportValidity()){e.preventDefault();return}btn.disabled=true;btn.textContent='Илгээж байна...';setTimeout(()=>{btn.disabled=false;btn.textContent='Анкет илгээх'},10000)});
