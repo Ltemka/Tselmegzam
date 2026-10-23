@@ -15,6 +15,8 @@ function doPost(e) {
     const get=(key,max=1500)=>String(p[key]||'').trim().slice(0,max);
     if(p.consent!=='yes'||!get('surname',80)||!get('givenName',80)||!get('phone',24)||!get('position',100))
       return response('Анкет дутуу байна','Заавал бөглөх хэсгүүдээ шалгана уу.');
+    const register=get('register',10).toUpperCase();
+    if(register&&!/^[А-ЯӨҮ]{2}[0-9]{8}$/.test(register)) return response('Регистр буруу байна','Регистрийн дугаарын хэлбэрийг шалгана уу.');
     const email=get('email',120);
     if(email&&!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) return response('Имэйл буруу байна','Имэйл хаягаа шалгана уу.');
     const experience=get('experience',3);
@@ -26,7 +28,7 @@ function doPost(e) {
       const sh=SpreadsheetApp.openById(SHEET_ID).getSheetByName('Анкет оролт');
       if(!sh)throw new Error('Анкет оролт missing');
       const id=Utilities.getUuid();
-      const row=[id,new Date(),get('surname',80),get('givenName',80),get('phone',24),email,
+      const row=[id,new Date(),get('surname',80),get('givenName',80),get('register',10).toUpperCase(),get('phone',24),email,
         get('city',100),get('project',160),get('position',100),get('education',120),
         experience,get('startDate',10),get('fieldReady',30),get('license',60),
         get('workHistory'),get('skills'),'Шинэ'].map(safe);
