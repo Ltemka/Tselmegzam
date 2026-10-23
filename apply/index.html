@@ -7,6 +7,7 @@
 <div class="section">Холбоо барих мэдээлэл</div>
 <label>Овог *<input name="surname" required maxlength="80" autocomplete="family-name"></label>
 <label>Нэр *<input name="givenName" required maxlength="80" autocomplete="given-name"></label>
+<label>Регистрийн дугаар *<input name="register" required maxlength="10" minlength="10" pattern="[А-ЯӨҮа-яөү]{2}[0-9]{8}" title="2 кирилл үсэг, 8 тоо. Жишээ: АА12345678" placeholder="АА12345678" autocomplete="off" style="text-transform:uppercase"></label>
 <label>Утас *<input name="phone" required type="tel" maxlength="24" autocomplete="tel"></label>
 <label>Имэйл<input name="email" type="email" maxlength="120" autocomplete="email"></label>
 <label>Аймаг / хот<input name="city" maxlength="100"></label>
