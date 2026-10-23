@@ -96,7 +96,7 @@ function hrView(){return '<div class="hr-tabbar"><button id="hr-tab-attendance" 
 function hrSwitch(tab){hrActiveTab=tab;try{sessionStorage.setItem(ERP_HR_TAB_KEY,tab);}catch(e){}document.querySelectorAll('.hr-tabbar button').forEach(b=>b.classList.toggle('active',b.id==='hr-tab-'+tab));const el=document.getElementById('hr-content');if(!el)return;el.innerHTML=tab==='attendance'?hrAttendanceView():tab==='application'?hrApplicationView():hrQrView();if(tab==='attendance')hrUpdateAttendance();}
 function hrQrView(){
  const url='https://www.tselmegzam.mn/apply/';
- const poster='/assets/hr-anket-qr-poster.png';
+ const poster='/assets/Tselmeg%20Zam%20Recruitment%20QR%20Poster.png';
  const qr='https://api.qrserver.com/v1/create-qr-code/?size=900x900&data='+encodeURIComponent(url);
  return '<section class="panel"><div class="hr-title"><div><h3>QR холбоос үзэх</h3><p class="panel-sub">Ажилд орох анкетын QR постер</p></div><button class="primary" type="button" onclick="hrCopyQr()">📋 QR зураг хуулах</button></div>'+
  '<div style="text-align:center;padding:24px;background:#f5f8fc;border-radius:14px">'+
