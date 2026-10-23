@@ -23,8 +23,8 @@ function doPost(e) {
     const safe=v=>{v=String(v||'');return /^[=+@\\-\\t\\r]/.test(v)?"'"+v:v;};
     const lock=LockService.getScriptLock();lock.waitLock(10000);
     try{
-      const sh=SpreadsheetApp.openById(SHEET_ID).getSheetByName('Sheet1');
-      if(!sh)throw new Error('Sheet1 missing');
+      const sh=SpreadsheetApp.openById(SHEET_ID).getSheetByName('Анкет оролт');
+      if(!sh)throw new Error('Анкет оролт missing');
       const id=Utilities.getUuid();
       const row=[id,new Date(),get('surname',80),get('givenName',80),get('phone',24),email,
         get('city',100),get('project',160),get('position',100),get('education',120),
