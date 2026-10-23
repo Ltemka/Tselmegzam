@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="mn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Ажилд орох анкет | Цэлмэг Зам ХХК</title>
+<style>:root{--navy:#102e4e;--orange:#ff7a24}*{box-sizing:border-box}body{margin:0;background:#f1f5f9;color:#18324a;font:15px/1.55 "Segoe UI",Arial,sans-serif}.header{background:white;border-bottom:1px solid #dde6ee}.wrap{max-width:930px;margin:auto;padding:22px}.brand{display:flex;align-items:center;gap:13px;font-size:20px;font-weight:850;color:var(--navy)}.brand img{width:64px;height:55px;object-fit:contain}h1{font-size:28px;margin:22px 0 7px;color:var(--navy)}p{color:#617589}.card{background:white;border:1px solid #e2e9f0;border-radius:16px;padding:28px;margin:22px 0;box-shadow:0 8px 30px #133b5710}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}label{display:grid;gap:6px;font-weight:650;font-size:13px}input,select,textarea{width:100%;font:inherit;border:1px solid #cfdae4;border-radius:9px;padding:12px;background:white;color:#18324a}textarea{resize:vertical;min-height:90px}.full{grid-column:1/-1}.section{grid-column:1/-1;background:#edf3f8;color:var(--navy);padding:11px 12px;border-radius:8px;font-weight:800;margin-top:8px}.consent{display:flex;align-items:start;gap:11px;font-weight:400}.consent input{width:18px;height:18px;flex:0 0 18px}.submit{background:var(--orange);color:white;border:0;padding:14px 28px;border-radius:9px;font-weight:800;cursor:pointer}.submit:disabled{opacity:.6;cursor:not-allowed}.message{border-radius:10px;background:#fff2dd;padding:13px;color:#945519;margin:15px 0}.footer{color:#789;font-size:12px;text-align:center;margin:22px 0}@media(max-width:650px){.grid{grid-template-columns:1fr}.card{padding:18px}.wrap{padding:16px}h1{font-size:24px}}</style></head>
+<body><header class="header"><div class="wrap"><a class="brand" href="/"><img src="/assets/logo.png" alt="">ЦЭЛМЭГ ЗАМ ХХК</a></div></header><main class="wrap"><h1>Ажилд орох анкет</h1><p>Цэлмэг Зам ХХК-д ажиллах хүсэлтээ илгээнэ үү. ERP нэвтрэх код шаардахгүй.</p>
+<div class="card"><div class="message" id="status">Анкет хүлээн авах холболтыг идэвхжүүлж байна. Хувийн мэдээллээ одоогоор бүү оруулаарай.</div>
+<form id="applyForm" method="post" accept-charset="UTF-8" novalidate><div class="grid">
+<div class="section">Холбоо барих мэдээлэл</div>
+<label>Овог *<input name="surname" required maxlength="80" autocomplete="family-name"></label>
+<label>Нэр *<input name="givenName" required maxlength="80" autocomplete="given-name"></label>
+<label>Утас *<input name="phone" required type="tel" maxlength="24" autocomplete="tel"></label>
+<label>Имэйл<input name="email" type="email" maxlength="120" autocomplete="email"></label>
+<label>Аймаг / хот<input name="city" maxlength="100"></label>
+<label>Сонгосон төсөл<select name="project"><option value="">Сонгох</option><option>Баруунбүрэн – Амарбаясгалант хийд авто зам 33.4 км</option><option>Ханбогд сумын төвийн авто зам, авто зогсоол</option><option>Цогт-Овоо</option><option>УБ - Сүхбаатар дүүрэг</option><option>Төсөл хамаарахгүй / Нээлттэй</option></select></label>
+<div class="section">Ажлын мэдээлэл</div>
+<label>Горилж буй албан тушаал *<input name="position" required maxlength="100"></label>
+<label>Мэргэжил / боловсрол<input name="education" maxlength="120"></label>
+<label>Ажилласан жил<input name="experience" type="number" min="0" max="60" step="1"></label>
+<label>Ажил эхлэх боломжтой өдөр<input name="startDate" type="date"></label>
+<label>Хөдөө орон нутагт ажиллах боломж<select name="fieldReady"><option>Тийм</option><option>Үгүй</option><option>Нөхцлөөс хамаарна</option></select></label>
+<label>Жолооны үнэмлэхний ангилал<input name="license" maxlength="60"></label>
+<label class="full">Өмнөх ажлын туршлага<textarea name="workHistory" maxlength="1500"></textarea></label>
+<label class="full">Ур чадвар, үнэмлэх<textarea name="skills" maxlength="1500"></textarea></label>
+<label class="full consent"><input type="checkbox" name="consent" value="yes" required><span>Энэ анкетад өгсөн мэдээллийг ажилд авах сонгон шалгаруулалтын зорилгоор боловсруулж, хүний нөөцийн эрх бүхий ажилтан үзэхийг зөвшөөрч байна. *</span></label>
+</div><input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true"><div style="margin-top:20px"><button type="submit" class="submit" id="send" disabled>Анкет илгээх</button></div></form></div>
+<p class="footer">© Цэлмэг Зам ХХК · Анкетын хуудас</p></main>
+<script>
+/* Apps Script deployment URL supplied after manual deployment. Do not embed secrets. */
+const ENDPOINT='';
+const form=document.getElementById('applyForm'),status=document.getElementById('status'),btn=document.getElementById('send');
+if(/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(ENDPOINT)){form.action=ENDPOINT;btn.disabled=false;status.textContent='Мэдээллээ бөглөөд “Анкет илгээх” товчийг дарна уу. Амжилттай илгээгдсэн эсэхийг дараагийн хуудсанд баталгаажуулна.';status.style.background='#e9f6ee';status.style.color='#287746';}
+form.addEventListener('submit',e=>{if(btn.disabled){e.preventDefault();return}if(!form.reportValidity()){e.preventDefault();return}btn.disabled=true;btn.textContent='Илгээж байна...';setTimeout(()=>{btn.disabled=false;btn.textContent='Анкет илгээх'},10000)});
+</script></body></html>
