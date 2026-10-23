@@ -94,24 +94,33 @@ const hrExample=[
 ];
 function hrView(){return '<div class="hr-tabbar"><button id="hr-tab-attendance" onclick="hrSwitch(\'attendance\')">▤ Цаг бүртгэлийн Dashboard</button><button id="hr-tab-application" onclick="hrSwitch(\'application\')">＋ Ажилд орох анкет</button><button id="hr-tab-qr" onclick="hrSwitch(\'qr\')">▣ QR холбоос үзэх</button></div><div id="hr-content"></div>';}
 function hrSwitch(tab){hrActiveTab=tab;try{sessionStorage.setItem(ERP_HR_TAB_KEY,tab);}catch(e){}document.querySelectorAll('.hr-tabbar button').forEach(b=>b.classList.toggle('active',b.id==='hr-tab-'+tab));const el=document.getElementById('hr-content');if(!el)return;el.innerHTML=tab==='attendance'?hrAttendanceView():tab==='application'?hrApplicationView():hrQrView();if(tab==='attendance')hrUpdateAttendance();}
-function hrQrView(){const url='https://www.tselmegzam.mn/apply/';const qr='https://api.qrserver.com/v1/create-qr-code/?size=900x900&data='+encodeURIComponent(url);return '<section class="panel"><h3>QR холбоос үзэх</h3><p>Ажилд орох анкетын QR код</p><div style="text-align:center;padding:24px;background:#f5f8fc;border-radius:14px"><h2>ЦЭЛМЭГ ЗАМ ХХК</h2><h3>Анкет бөглөх бол энэхүү QR уншуул</h3><img src="'+qr+'" style="width:320px;max-width:100%" alt="Анкетын QR код"><p>'+url+'</p><button class="primary" onclick="hrCopyQr()">📋 QR зураг хуулах</button></div></section>';}
-async function hrCopyQr(){
+function hrQrView(){
  const url='https://www.tselmegzam.mn/apply/';
+ const poster='/assets/hr-anket-qr-poster.png';
  const qr='https://api.qrserver.com/v1/create-qr-code/?size=900x900&data='+encodeURIComponent(url);
+ return '<section class="panel"><div class="hr-title"><div><h3>QR холбоос үзэх</h3><p class="panel-sub">Ажилд орох анкетын QR постер</p></div><button class="primary" type="button" onclick="hrCopyQr()">📋 QR зураг хуулах</button></div>'+
+ '<div style="text-align:center;padding:24px;background:#f5f8fc;border-radius:14px">'+
+ '<img id="hrQrPoster" src="'+poster+'" alt="Цэлмэг Зам ХХК ажилд орох анкетын QR постер" style="display:block;margin:0 auto;width:100%;max-width:420px;height:auto;border-radius:14px;box-shadow:0 8px 24px rgba(16,46,78,.08);background:white" onerror="this.onerror=null;this.src=\''+qr+'\';document.getElementById(\'hrPosterNotice\').hidden=false">'+
+ '<p id="hrPosterNotice" hidden style="font-size:12px;color:#9c581e">Постер зураг серверт хараахан байршуулагдаагүй тул QR кодыг харуулж байна.</p>'+
+ '<p style="margin-top:16px"><a href="'+url+'" target="_blank" rel="noopener noreferrer">'+url+'</a></p></div></section>';
+}
+async function hrCopyQr(){
  try{
-  if(!navigator.clipboard||!window.ClipboardItem)throw new Error('Browser does not support image clipboard');
-  const response=await fetch(qr,{mode:'cors'});
-  if(!response.ok)throw new Error('QR image unavailable');
-  const original=await response.blob();
-  const image=await createImageBitmap(original);
-  const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=image.height;
-  const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0);
-  const png=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('PNG conversion failed')),'image/png'));
+  const img=document.getElementById('hrQrPoster');
+  if(!img)throw new Error('QR poster element not found');
+  if(!navigator.clipboard||!window.ClipboardItem)throw new Error('Clipboard images unavailable');
+  const response=await fetch(img.currentSrc||img.src,{mode:'cors'});
+  if(!response.ok)throw new Error('Image unavailable');
+  const blob=await response.blob();
+  const bitmap=await createImageBitmap(blob);
+  const canvas=document.createElement('canvas');canvas.width=bitmap.width;canvas.height=bitmap.height;
+  const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(bitmap,0,0);
+  const png=await new Promise((resolve,reject)=>canvas.toBlob(v=>v?resolve(v):reject(new Error('PNG conversion failed')),'image/png'));
   await navigator.clipboard.write([new ClipboardItem({'image/png':png})]);
-  alert('QR зураг хууллаа. Ctrl + V дарж Word, Paint эсвэл чат руу буулгана уу.');
+  alert('Зураг хууллаа. Ctrl + V дарж буулгана уу.');
  }catch(err){
-  console.error('QR image copy failed',err);
-  alert('QR зураг хуулах боломжгүй байна. QR код дээр хулганы баруун товч дараад Copy image / Зураг хуулах сонгоно уу. Дахин оролдохын өмнө браузерын Clipboard зөвшөөрлийг шалгана уу.');
+  console.error('QR poster copy failed',err);
+  alert('Зураг хуулах боломжгүй байна. Зураг дээр баруун товч дараад Copy image сонгоно уу.');
  }
 }
 function hrAttendanceView(){return '<div class="panel"><div class="hr-title"><div><h3>Төслийн ажилтнуудын цаг бүртгэл</h3><p class="panel-sub">Төслөөр болон сараар шүүж, нийт болон ажилтан тус бүрийн цагийг харна.</p></div><span class="chip">Жишээ өгөгдөл</span></div><div class="hr-tools"><label>Төсөл сонгох<select id="hr-project" onchange="hrProject=this.value;hrUpdateAttendance()"><option value="all">Бүх төсөл — нэгтгэл</option>'+hrProjectNames.map((p,i)=>'<option value="'+i+'" '+(String(i)===hrProject?'selected':'')+'>'+txEsc(p)+'</option>').join('')+'</select></label><label>Сар сонгох<input id="hr-month" type="month" value="'+txEsc(hrMonth)+'" onchange="hrMonth=this.value;hrUpdateAttendance()"></label><label>Ажилтан хайх<input id="hr-search" type="search" placeholder="Нэр, албан тушаал" value="'+txEsc(hrQuery)+'" oninput="hrQuery=this.value;hrUpdateAttendance()"></label></div><div id="hr-summary" class="kpis hr-metrics"></div><div class="hr-title"><h3>Ажилтан тус бүрийн бүртгэл</h3><span class="hr-muted" id="hr-results"></span></div><div class="table-wrap"><table><thead><tr><th>Ажилтан</th><th>Албан тушаал</th><th>Төсөл</th><th>Ирсэн өдөр</th><th>Үндсэн цаг</th><th>Илүү цаг</th><th>Нийт цаг</th><th>Хоцролт</th><th>Тасалсан өдөр</th></tr></thead><tbody id="hr-attendance-body"></tbody></table></div><div class="hr-help">Анхаарах: Эндэх жишээ ажилтнууд бодит хүн биш. Зөвхөн 2026-10 сарын демо ирцийн мэдээлэл байгаа. Бусад сард бодит өгөгдөл холбогдох хүртэл хоосон харагдана. Бодит мэдээлэл холбох үед Google Sheets-ийн ирцийн хүснэгт болон эрхийн хамгаалалт шаардлагатай.</div></div>';}
